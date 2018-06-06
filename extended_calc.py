@@ -59,3 +59,5 @@ if __name__ == '__main__':
     print(calculator('3 / 2 + 10 + 2 * 3 * 2.5 - 4 + 1 / 2'))
     print(calculator('234 - 34 * 2342 / 2 - 34 + 232 - 3 - 4'))
     print(calculator('2 + 1 - 3 / 0'))
+    print(calculator('2 + a - 3 / 0'))
+    print(calculator(''))

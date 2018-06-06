@@ -6,6 +6,8 @@ import random
 import ephem
 import datetime
 from lexicon import *
+from extended_calc import *
+from full_moon import *
 
 
 # Настройки прокси
@@ -52,6 +54,10 @@ def greet_planet(bot, update):
         find_planet(bot, update, planet)
 
 
+def moon(bot, update, user_text):
+    day = user_text
+    update.message.reply_text(moon_full(day))
+
 
 def bot_answers(bot, update):
 	punctuation_mark = ['!', '?', '...', '?!', ' :)', ' :(', ' ^-^', ' $%^#']
@@ -64,7 +70,7 @@ def greet_user(bot, update):
     update.message.reply_text(text)
 
 
-def calc(bot, update, user_text):
+def reaction(bot, update, user_text):
     text = user_text.strip(' ')
     if '=' in text:
         # клавиатура
@@ -78,19 +84,8 @@ def calc(bot, update, user_text):
         #              reply_markup=reply_markup)
 
         c = text[:-1]
-        ''.join(c.split())
-        try:
-            print(eval(c))
-            update.message.reply_text(eval(c))
-        except ZeroDivisionError:
-            print('Делить на ноль - нехорошо!')
-            update.message.reply_text('Делить на ноль - нехорошо!')
-        except SyntaxError:
-            print('А выражение до "=" написать?')
-            update.message.reply_text('А выражение до "=" написать?')
-        except NameError:
-            print('Уравнения я не понимаю :(')
-            update.message.reply_text('Уравнения я не понимаю :(')
+
+        update.message.reply_text(calculator(c))
 
 
 def talk_to_me(bot, update):
@@ -99,6 +94,8 @@ def talk_to_me(bot, update):
     if '=' in user_text:
         print(user_text)
         calc(bot, update, user_text)
+    elif 'полнолуние' in user_text:
+        moon(bot, update, user_text)
     else:
         update.message.reply_text(user_text + bot_answers(bot, update))
 

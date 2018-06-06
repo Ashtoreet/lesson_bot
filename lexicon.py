@@ -9,5 +9,13 @@ lexicon = {
             'Andromeda': 'Андромеда',
             'Ursa Major': 'Большая Медведица',
             'Canis Major': 'Большой Пес',
-            'Auriga': 'Возничий'
+            'Auriga': 'Возничий',
+            'Lupus': 'Волк',
+            'Bootes': 'Волопас',
+            'Coma Berenices': 'Волосы Вероники',
+            'Hercules': 'Геркулес',
+            'Hydra': 'Гидра',
+            'Columba': 'Голубь',
+            'Canes Venatici': 'Гончие Псы',
+            'Delphinus': 'Дельфин'
             }
