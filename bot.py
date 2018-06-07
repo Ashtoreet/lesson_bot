@@ -54,11 +54,6 @@ def greet_planet(bot, update):
         find_planet(bot, update, planet)
 
 
-def moon(bot, update, user_text):
-    day = user_text
-    update.message.reply_text(moon_full(day))
-
-
 def bot_answers(bot, update):
 	punctuation_mark = ['!', '?', '...', '?!', ' :)', ' :(', ' ^-^', ' $%^#']
 	return random.choice(punctuation_mark)
@@ -70,7 +65,7 @@ def greet_user(bot, update):
     update.message.reply_text(text)
 
 
-def reaction(bot, update, user_text):
+def calc(bot, update, user_text):
     text = user_text.strip(' ')
     if '=' in text:
         # клавиатура
@@ -89,13 +84,13 @@ def reaction(bot, update, user_text):
 
 
 def talk_to_me(bot, update):
-    user_text = update.message.text 
+    user_text = update.message.text
     print(user_text)
     if '=' in user_text:
         print(user_text)
         calc(bot, update, user_text)
-    elif 'полнолуние' in user_text:
-        moon(bot, update, user_text)
+    elif 'когда' and 'полнолуние' in user_text.lower():
+        update.message.reply_text(moon_full(user_text))
     else:
         update.message.reply_text(user_text + bot_answers(bot, update))
 
