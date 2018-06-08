@@ -29,7 +29,6 @@ def translation(en_full, en):
 
 
 def find_planet(bot, update, planet):
-    # now = datetime.datetime.now().strftime('%Y/%m/%d')
     pl = getattr(ephem, planet)()
     pl.compute(datetime.datetime.now().strftime('%Y/%m/%d'))
 
@@ -44,13 +43,10 @@ def find_planet(bot, update, planet):
 def greet_planet(bot, update):
     user_text = update.message.text
     text = 'Вызван /planet'
-    print(text)
     update.message.reply_text(text)
 
     if " " in user_text:
         planet = user_text.split(' ')[1].capitalize()
-        print(planet)
-
         find_planet(bot, update, planet)
 
 
@@ -65,18 +61,26 @@ def greet_user(bot, update):
     update.message.reply_text(text)
 
 
+def calc_keyboard(bot, update):
+    # клавиатура
+    custom_keyboard = [
+                        ['top-left', 'top-right'], 
+                        ['bottom-left', 'bottom-right']
+                       ]
+    reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
+    bot.send_message(chat_id=chat_id, 
+                     text="Custom Keyboard Test", 
+                     reply_markup=reply_markup)
+
+
 def calc(bot, update, user_text):
     text = user_text.strip(' ')
     if '=' in text:
-        # клавиатура
-        # custom_keyboard = [
-        #                     ['top-left', 'top-right'], 
-        #                     ['bottom-left', 'bottom-right']
-        #                    ]
-        # reply_markup = telegram.ReplyKeyboardMarkup(custom_keyboard)
-        # bot.send_message(chat_id=chat_id, 
-        #              text="Custom Keyboard Test", 
-        #              reply_markup=reply_markup)
+        try:
+            calc_keyboard(bot, update)
+        except:
+            print('что-то не получилось')
+            update.message.reply_text('что-то не получилось')
 
         c = text[:-1]
 
@@ -107,15 +111,12 @@ def count_word(bot, update):
             print(len(c_word))
             update.message.reply_text(len(c_word))
         else:
-            print('Тут пустая строка!')
             update.message.reply_text('Тут пустая строка!')
 
     elif "'" in user_text:
-        print('Слово нужно писать в двойных кавычках.')
         update.message.reply_text('Слово нужно писать в двойных кавычках.')
 
     else:
-        print('не было кавычек!')
         update.message.reply_text('не было кавычек!')
 
 
