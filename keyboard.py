@@ -3,15 +3,12 @@
 """Basic example for a bot that uses inline keyboards.
 # This program is dedicated to the public domain under the CC0 license.
 """
-import logging
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Updater, CommandHandler, CallbackQueryHandler
-import bot_key
 
-logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-                    level=logging.INFO)
-logger = logging.getLogger(__name__)
-PROXY = bot_key.proxy
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Updater, CommandHandler
+from extended_calc import *
+
+BASKET = {}
 
 
 def start(bot, update):
@@ -41,51 +38,12 @@ def start(bot, update):
 
 def button(bot, update):
     query = update.callback_query
+    chat_id = query.message.chat_id
 
-    bot.edit_message_text(text="{}".format(query.data),
-                          chat_id=query.message.chat_id,
-                          message_id=query.message.message_id)
-    # return query.data
-
-    
-def sum_button(bot, update):
-
-    thing = ''
-    while button is not '=':
-        thing += button(bot, update)
+    if query.data is not '=':
+        BASKET[chat_id] = BASKET.get(chat_id, '') + query.data
     else:
-        bot.edit_message_text(text="Сейчас посчитаем!",chat_id=query.message.chat_id,
+        bot.edit_message_text(text=calculator(BASKET[chat_id]),chat_id=chat_id,
                           message_id=query.message.message_id)
+        del BASKET[chat_id]
 
-    # calcul.append(button(bot, update))
-    print(thing)
-
-
-def help(bot, update):
-    update.message.reply_text("Use /start to test this bot.")
-
-
-def error(bot, update, error):
-    """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, error)
-
-
-def main():
-    # Create the Updater and pass it your bot's token.
-    updater = Updater(bot_key.key_ring, request_kwargs=PROXY)
-
-    updater.dispatcher.add_handler(CommandHandler('start', start))
-    updater.dispatcher.add_handler(CallbackQueryHandler(button))
-    updater.dispatcher.add_handler(CommandHandler('help', help))
-    updater.dispatcher.add_error_handler(error)
-
-    # Start the Bot
-    updater.start_polling()
-
-    # Run the bot until the user presses Ctrl-C or the process receives SIGINT,
-    # SIGTERM or SIGABRT
-    updater.idle()
-
-
-if __name__ == '__main__':
-    main()
