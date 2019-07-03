@@ -1,4 +1,4 @@
-# lesson_bot
+# Klepa
 ### **Bot example**
 
 A simple bot. Need key from **@BotFather**.
